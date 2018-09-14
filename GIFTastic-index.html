@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy API</title>
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+   $(document).ready(function() {
+    // Example queryURL for Giphy API
+    var queryURL = " ";
+
+
+var myToppics = ['Maple Leafs', 'Toronto Raptors', 'Scarface', 'God Father', 'The Office', 'NHL','NBA', 'NFL','MLB','The Other Guys']
+var still = [''];
+var gif = [''];
+var newCatSearchButton = $('<button>')
+var inputfield = $('<input>')
+var newDiv1 = $('<div>')
+var newDiv2 = $('<div>')
+var btnDiv = $('<div>')
+var searchInfo = '';
+var active = false;
+
+
+
+
+//creating category search buttons from array myToppics
+$('body').append(btnDiv)
+btnDiv.attr('id','divForButtons')
+for (var i = 0; i < myToppics.length;i++){
+    var searchButton = $('<button>')
+    searchButton.addClass('TopicButtons')
+    searchButton.attr('data-name',myToppics[i])
+    searchButton.text(myToppics[i])
+    $('#divForButtons').append(searchButton)
+}
+
+
+
+//create a new DIV for user input search input field and button
+$('body').append(newDiv1)
+newDiv1.append(searchButton)
+searchButton.css({'height': '30px', 'width':'auto', 'margin': '10px'})
+searchButton.text('Search')
+newDiv1.append(inputfield)
+$('body').append(newDiv2)
+
+// search and display GIF's from pre-made button toppics 
+$('.TopicButtons').click(function captureInput() {
+searchInfo = $(this).attr('data-name')
+searchInfo.replace('','+')
+queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchInfo + "&api_key=dc6zaTOxFJmzC&limit=5"
+search(queryURL)
+});
+
+
+//capture input field info and place it in API queryURL
+searchButton.click(function captureInput() {
+  searchInfo = inputfield.val()
+  searchInfo.replace('','+')
+  queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchInfo + "&api_key=dc6zaTOxFJmzC&limit=5"
+  search(queryURL)
+});
+
+
+
+function search(queryURL){
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+        for (var i = 0; i<response.data.length; i++){
+            newDiv2.append("<img class= 'capturedImages' id='" + i + "'  src='" + response.data[i].images.original_still.url + "'/>" )
+            still.push(response.data[i].images.original_still.url)
+            gif.push(response.data[i].images.downsized.url)  
+            if (i===0){
+                still.shift()
+                gif.shift()
+            }
+            console.log(response.data[i].images.downsized.url)
+            }
+            return
+    })
+}
+
+
+// $('#0').on('click', function () {    (WHY didn't this work??????)
+
+//})
+$(document).on('click','.capturedImages', function(){
+    var idVal = $(this).attr('id')
+    if (!active){
+        $(this).attr('src', gif[idVal] )
+        active = true;
+    }
+    else {
+        $(this).attr('src', still[idVal] )
+        active = false;
+    }
+})
+
+  
+})
+  </script>
+
+
+</body>
+
+</html>
