@@ -77,7 +77,9 @@ function search(queryURL){
     }).then(function(response) {
         for (var i = 0; i<response.data.length; i++){
            
-            newDiv2.append('<img class="capturedImages" id="' + i + '" src="'+ response.data[i].images.original_still.url + '" data-status="still">')
+            newDiv2.append('<div class="capturedImages" id="' + i + '" src="'+ response.data[i].images.original_still.url + '" data-status="still"></div>')
+                
+            // '<img class="capturedImages" id="' + i + '" src="'+ response.data[i].images.original_still.url + '" data-status="still">'
             newDiv2.css({'height':'250px','width':'300px', 'border': '2px black solid'})
             still.push(response.data[i].images.fixed_height_still.url)
             gif.push(response.data[i].images.fixed_height.url)  
