@@ -24,6 +24,7 @@ var newDiv1 = $('<div>')
 var newDiv2 = $('<div>')
 var btnDiv = $('<div>')
 var searchInfo = '';
+var i = 0;
 
 
 
@@ -33,11 +34,11 @@ var searchInfo = '';
 //creating category search buttons from array myToppics
 $('body').append(btnDiv)
 btnDiv.attr('id','divForButtons')
-for (var i = 0; i < myToppics.length;i++){
+for (var j = 0; j < myToppics.length;j++){
     var searchButton = $('<button>')
     searchButton.addClass('TopicButtons')
-    searchButton.attr('data-name',myToppics[i])
-    searchButton.text(myToppics[i])
+    searchButton.attr('data-name',myToppics[j])
+    searchButton.text(myToppics[j])
     $('#divForButtons').append(searchButton)
 }
 
@@ -75,20 +76,20 @@ function search(queryURL){
       url: queryURL,
       method: "GET",
     }).then(function(response) {
-        for (var i = 0; i<response.data.length; i++){
-           
-            newDiv2.append('<div class="capturedImages" id="' + i + '" src="'+ response.data[i].images.original_still.url + '" data-status="still"></div>')
-                
-            // '<img class="capturedImages" id="' + i + '" src="'+ response.data[i].images.original_still.url + '" data-status="still">'
-            newDiv2.css({'height':'250px','width':'300px', 'border': '2px black solid'})
-            still.push(response.data[i].images.fixed_height_still.url)
-            gif.push(response.data[i].images.fixed_height.url)  
+        for (let j = 0; j<response.data.length; j++){
+        //    debugger
+            newDiv2.append('<img class="capturedImages" id="' + i + '" src="'+ response.data[j].images.original_still.url + '" data-status="still">')
+            $('.capturedImages').css({'height':'250px','width':'300px', 'border': '2px black solid'})
+            $('.capturedImages').css({"object-fit":"cover", "margin":"5px"})
+            still.push(response.data[j].images.fixed_height_still.url)
+            gif.push(response.data[j].images.fixed_height.url)  
             if (i===0){
                 still.shift()
                 gif.shift()
             }
-            console.log(response.data[i].images.downsized.url)
+            console.log(response.data[j].images.downsized.url)
             console.log(response)
+            i++
             }
             return
     })
