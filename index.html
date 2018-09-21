@@ -3,11 +3,21 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Giphy API</title>
+  <title>GIF-Tastic</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Bungee+Shade|Ewert|Faster+One|Frijole|Fugaz+One|Monoton|Nosifer|Orbitron:700|Press+Start+2P|Shojumaru|Sree+Krushnadevaraya" rel="stylesheet">
+ 
 </head>
 
+
 <body>
-    
+    <header class="name">GIF-Tastic</header>
+    <div class="line"></div>
+    <div class="container"></div>
+
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
    $(document).ready(function() {
@@ -28,11 +38,11 @@ var i = 0;
 
 
 
-
-
-
+$('body').css({'margin':'0',"background":"url(wallpaper-plain.jpg)"})
+$('.name').css({'height': 'auto', 'width':'100%', 'margin': '0','padding':'20px 0 0 0', 'text-align':'center','font-family': 'Notable','font-size':'70px','color':'white',"background":"url(jeans.jpg)"})
+$('.line').css({'height':'10px','width':'100%','background-color':'grey'})
 //creating category search buttons from array myToppics
-$('body').append(btnDiv)
+$('.container').append(btnDiv)
 btnDiv.attr('id','divForButtons')
 for (var j = 0; j < myToppics.length;j++){
     var searchButton = $('<button>')
@@ -45,12 +55,15 @@ for (var j = 0; j < myToppics.length;j++){
 
 
 //create a new DIV for user input search input field and button
-$('body').append(newDiv1)
+$('.container').append(newDiv1)
+$('.container').css({'height': 'auto','min-height':'500px', 'width':'960px', 'margin': '50px 50px 50px 250px','padding':'20px',"background-color":"#F6F7EE","box-shadow":"20px 30px #DDDFD2"})
+var searchButton = $('<button>')
 newDiv1.append(searchButton)
 searchButton.css({'height': '30px', 'width':'auto', 'margin': '10px'})
+searchButton.attr('data-name','mainSearch')
 searchButton.text('Search')
 newDiv1.append(inputfield)
-$('body').append(newDiv2)
+$('.container').append(newDiv2)
 
 // search and display GIF's from pre-made button toppics 
 $('.TopicButtons').click(function captureInput() {
@@ -63,21 +76,27 @@ search(queryURL)
 
 //capture input field info and place it in API queryURL
 searchButton.click(function captureInput() {
-  searchInfo = inputfield.val()
-  searchInfo.replace('','+')
-  queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchInfo + "&api_key=dc6zaTOxFJmzC&limit=5"
-  search(queryURL)
+    searchInfo = inputfield.val()
+    var searchButton = $('<button>')
+    searchButton.addClass('TopicButtons')
+    searchButton.attr('data-name',searchInfo)
+    searchButton.text(searchInfo)
+    $('#divForButtons').append(searchButton)
+    searchInfo.replace('','+')
+    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchInfo + "&api_key=dc6zaTOxFJmzC&limit=5"
+    search(queryURL)
 });
 
 
 
 function search(queryURL){
+    newDiv2.addClass('tv')
+    $('.tv').css({"width":"auto", "height":"auto", "border":"2px black solid", "padding":"5px 0  5px 5px","background":"url(deadair.gif)"})
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function(response) {
         for (let j = 0; j<response.data.length; j++){
-        //    debugger
             newDiv2.append('<img class="capturedImages" id="' + i + '" src="'+ response.data[j].images.original_still.url + '" data-status="still">')
             $('.capturedImages').css({'height':'250px','width':'300px', 'border': '2px black solid'})
             $('.capturedImages').css({"object-fit":"cover", "margin":"5px"})
